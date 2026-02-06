@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Niti Kavya G.S Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="portal.css">
+    <style>
+        :root {
+            --admin-primary: #00d4ff;
+            --admin-bg: #050505;
+        }
+
+        body.admin-mode {
+            background: var(--admin-bg);
+            color: #fff;
+        }
+
+        .admin-sidebar {
+            background: #0a0a0a;
+            border-right: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .admin-nav li.active a {
+            color: var(--admin-primary);
+            background: rgba(0, 212, 255, 0.05);
+            border-right: 3px solid var(--admin-primary);
+        }
+
+        .admin-card {
+            background: #0f0f0f;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            text-align: left;
+            padding: 15px;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .admin-table th {
+            color: var(--admin-primary);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-admin {
+            background: var(--admin-primary);
+            color: #000;
+            font-weight: 700;
+        }
+
+        .edit-form-group {
+            margin-bottom: 20px;
+        }
+
+        .edit-form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #888;
+            font-size: 13px;
+        }
+
+        .edit-form-group input,
+        .edit-form-group textarea,
+        .edit-form-group select {
+            width: 100%;
+            background: #111;
+            border: 1px solid #222;
+            padding: 12px;
+            color: #fff;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .edit-form-group input:focus {
+            border-color: var(--admin-primary);
+        }
+
+        /* Modal for Editing */
+        .admin-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .admin-modal.active {
+            display: flex;
+        }
+
+        .admin-modal-content {
+            background: #0a0a0a;
+            width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 20px;
+            border: 1px solid var(--admin-primary);
+            padding: 40px;
+        }
+
+        .btn.red {
+            border-color: #ff4444 !important;
+            color: #ff4444 !important;
+            background: rgba(255, 68, 68, 0.05) !important;
+        }
+
+        .btn.red:hover {
+            background: #ff4444 !important;
+            color: #fff !important;
+        }
+
+        .quiz-q-block {
+            border-left: 4px solid var(--admin-primary) !important;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="portal-body admin-mode">
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <div class="portal-container">
+        <!-- Sidebar -->
+        <aside class="portal-sidebar admin-sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="assets/logo.png" alt="Niti Kavya Logo" class="logo-img">
+                    <div class="logo-text">ADMIN <span>PANEL</span></div>
+                </div>
+            </div>
+            <nav class="sidebar-nav admin-nav">
+                <ul>
+                    <li class="active" data-section="manage-batches">
+                        <a href="#"><span class="icon">📦</span> Manage Batches</a>
+                    </li>
+                    <li data-section="manage-users">
+                        <a href="#"><span class="icon">👥</span> User Database</a>
+                    </li>
+                    <li data-section="manage-announcements">
+                        <a href="#"><span class="icon">📢</span> Announcements</a>
+                    </li>
+                    <li data-section="site-config">
+                        <a href="#"><span class="icon">⚙️</span> Site Config</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="portal.html" class="btn btn-outline full-width">Exit Admin</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="portal-main">
+            <header class="portal-header">
+                <div class="header-left">
+                    <h2 id="admin-section-title">Batch Management</h2>
+                </div>
+                <div class="header-user">
+                    <div class="user-info">
+                        <span class="user-name">S.S. Dubey</span>
+                        <span class="user-role" style="color: var(--admin-primary);">SUPER ADMIN</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="portal-content" id="admin-content">
+                <!-- Content will be injected by admin.js -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit/Add Modal -->
+    <div class="admin-modal" id="edit-modal">
+        <div class="admin-modal-content">
+            <h3 id="modal-title" style="margin-bottom: 25px;">Edit Item</h3>
+            <div id="modal-form-container">
+                <!-- Form fields injected dynamically -->
+            </div>
+            <div style="display: flex; gap: 15px; margin-top: 30px;">
+                <button class="btn btn-primary btn-admin" id="save-btn">Save Changes</button>
+                <button class="btn btn-outline" id="cancel-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="admin.js"></script>
+</body>
+
+</html>
