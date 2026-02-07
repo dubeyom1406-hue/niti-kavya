@@ -53,7 +53,6 @@ function renderCourses(coursesToRender) {
                 <p class="course-instructor">MASTERED BY <span>S.S. DUBEY</span></p>
                 <div class="course-footer">
                     <p class="course-price">${course.price}</p>
-                    <button class="btn btn-sm btn-primary auth-trigger">ENROLL NOW</button>
                 </div>
             </div>
         `;

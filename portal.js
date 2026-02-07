@@ -396,7 +396,7 @@ window.portal = {
         `);
 
         try {
-            const response = await fetch('http://localhost:3000/send-otp', {
+            const response = await fetch('/api/send-otp', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email })
@@ -404,6 +404,7 @@ window.portal = {
             const data = await response.json();
 
             if (data.success) {
+                window.verificationHash = data.hash; // Store for verify step
                 window.portal.showModal(`
                     <div style="font-size: 40px; margin-bottom: 20px;">🔐</div>
                     <h2 style="margin-bottom: 10px;">Enter Verification Code</h2>
@@ -434,11 +435,8 @@ window.portal = {
             console.error("OTP Error:", error);
             window.portal.showModal(`
                 <div style="font-size: 40px; margin-bottom: 20px;">🔌</div>
-                <h2 style="margin-bottom: 10px; color: #ff4444;">Server Connection Failed</h2>
-                <p style="color: #ccc; margin-bottom: 30px;">The backend server is not running. Please run 'node server.js' to enable email features.</p>
-                <div style="background: #1a1a1a; padding: 15px; border-radius: 8px; text-align: left; margin-bottom: 25px; font-family: monospace; color: #4CAF50;">
-                    > node server.js
-                </div>
+                <h2 style="margin-bottom: 10px; color: #ff4444;">Connection Error</h2>
+                <p style="color: #ccc; margin-bottom: 30px;">Could not connect to server. Please check your internet.</p>
                 <button class="btn btn-primary full-width" onclick="window.portal.hideModal()">Close</button>
             `);
         }
@@ -453,10 +451,14 @@ window.portal = {
         `);
 
         try {
-            const response = await fetch('http://localhost:3000/verify-otp', {
+            const response = await fetch('/api/verify-otp', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: currentUser.email, otp: code })
+                body: JSON.stringify({
+                    email: currentUser.email,
+                    otp: code,
+                    hash: window.verificationHash || '' // Send hash back
+                })
             });
             const data = await response.json();
 
