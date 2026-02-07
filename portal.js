@@ -835,7 +835,13 @@ function renderProfile() {
 
 function renderLeaderboard() {
     const users = JSON.parse(localStorage.getItem('nitikavya_users') || '{}');
-    const sortedUsers = Object.values(users).sort((a, b) => (b.stats.xp || 0) - (a.stats.xp || 0));
+    // Sort by XP (descending), then by streak as a tie-breaker
+    const sortedUsers = Object.values(users).sort((a, b) => {
+        const xpA = a.stats?.xp || 0;
+        const xpB = b.stats?.xp || 0;
+        if (xpB !== xpA) return xpB - xpA;
+        return (b.stats?.streak || 0) - (a.stats?.streak || 0);
+    });
 
     portalContent.innerHTML = `
         <h2 class="section-title">Global Warrior Leaderboard</h2>
@@ -845,25 +851,29 @@ function renderLeaderboard() {
                     <tr>
                         <th style="padding:15px; text-align:left;">Rank</th>
                         <th style="padding:15px; text-align:left;">Soldier</th>
+                        <th style="padding:15px; text-align:left;">Target Batch</th>
                         <th style="padding:15px; text-align:left;">Streak</th>
                         <th style="padding:15px; text-align:left;">Total XP</th>
                     </tr>
                 </thead>
                 <tbody>
-                    ${sortedUsers.map((u, i) => `
+                    ${sortedUsers.length > 0 ? sortedUsers.map((u, i) => `
                         <tr style="border-bottom:1px solid rgba(255,255,255,0.05); ${u.email === currentUser.email ? 'background: rgba(255,107,0,0.05);' : ''}">
-                            <td style="padding:15px;">${i + 1}</td>
+                            <td style="padding:15px;">
+                                ${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1}
+                            </td>
                             <td style="padding:15px; display:flex; align-items:center; gap:10px;">
-                                <img src="${u.avatar}" style="width:30px; height:30px; border-radius:50%;">
+                                <img src="${u.avatar}" style="width:30px; height:30px; border-radius:50%; border: 1px solid rgba(255,255,255,0.1);">
                                 <div>
-                                    <div style="font-weight:700;">${u.name} ${u.email === currentUser.email ? '(You)' : ''}</div>
-                                    <div style="font-size:10px; color:#666;">${u.role}</div>
+                                    <div style="font-weight:700; color: ${u.email === currentUser.email ? 'var(--primary)' : 'white'};">${u.name} ${u.email === currentUser.email ? '(You)' : ''}</div>
+                                    <div style="font-size:10px; color:#666;">Level ${Math.floor((u.stats?.xp || 0) / 100) + 1} Aspirant</div>
                                 </div>
                             </td>
-                            <td style="padding:15px;">🔥 ${u.stats.streak || 0}</td>
-                            <td style="padding:15px; font-weight:900; color:var(--primary);">${u.stats.xp || 0} XP</td>
+                            <td style="padding:15px; font-size:12px; color:#888;">${u.goal || 'General GS'}</td>
+                            <td style="padding:15px;">🔥 ${u.stats?.streak || 0}</td>
+                            <td style="padding:15px; font-weight:900; color:var(--primary);">${u.stats?.xp || 0} XP</td>
                         </tr>
-                    `).join('')}
+                    `).join('') : '<tr><td colspan="5" style="padding:40px; text-align:center; color:#666;">No recruits found in the database yet.</td></tr>'}
                 </tbody>
             </table>
         </div>
