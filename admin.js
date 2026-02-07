@@ -69,10 +69,37 @@ document.addEventListener('DOMContentLoaded', () => {
     initCustomCursor();
     renderManageBatches();
     setupSidebar();
+    setupMobileMenu();
 
     cancelBtn.onclick = () => editModal.classList.remove('active');
     saveBtn.onclick = handleSave;
 });
+
+function setupMobileMenu() {
+    const hamburger = document.getElementById('admin-hamburger');
+    const sidebar = document.querySelector('.admin-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    if (hamburger && sidebar && overlay) {
+        hamburger.onclick = () => {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        };
+
+        overlay.onclick = () => {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        };
+
+        // Close sidebar when a link is clicked
+        sidebar.querySelectorAll('li').forEach(li => {
+            li.addEventListener('click', () => {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+        });
+    }
+}
 
 function initCustomCursor() {
     const cursor = document.querySelector('.cursor');

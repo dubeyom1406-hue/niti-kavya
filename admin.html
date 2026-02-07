@@ -138,6 +138,7 @@
             animation: slideIn 0.3s ease;
         }
 
+
         @keyframes slideIn {
             from {
                 opacity: 0;
@@ -149,10 +150,86 @@
                 transform: translateX(0);
             }
         }
+
+        @media (max-width: 768px) {
+            .portal-container {
+                flex-direction: column;
+            }
+
+            .admin-sidebar {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                width: 280px;
+                height: 100vh;
+                z-index: 2000;
+                transition: 0.3s ease;
+                box-shadow: 20px 0 50px rgba(0, 0, 0, 0.5);
+            }
+
+            .admin-sidebar.active {
+                left: 0;
+            }
+
+            .portal-main {
+                width: 100%;
+            }
+
+            .admin-table-wrapper {
+                overflow-x: auto;
+            }
+
+            .admin-modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.7);
+                z-index: 1999;
+                backdrop-filter: blur(5px);
+            }
+
+            .sidebar-overlay.active {
+                display: block;
+            }
+
+            #admin-hamburger {
+                display: flex !important;
+            }
+
+            .header-user {
+                display: none;
+            }
+        }
+
+        #admin-hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 10px;
+            margin-right: 15px;
+        }
+
+        #admin-hamburger span {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background: var(--admin-primary);
+            transition: 0.3s;
+        }
     </style>
 </head>
 
 <body class="portal-body admin-mode">
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
     <div class="cursor"></div>
     <div class="cursor-follower"></div>
 
@@ -189,7 +266,12 @@
         <!-- Main Content -->
         <main class="portal-main">
             <header class="portal-header">
-                <div class="header-left">
+                <div class="header-left" style="display: flex; align-items: center;">
+                    <div id="admin-hamburger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                     <h2 id="admin-section-title">Batch Management</h2>
                 </div>
                 <div class="header-user">
