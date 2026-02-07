@@ -191,7 +191,12 @@ function initAuthModal() {
             if (isEnrollment) {
                 showCheckoutModal();
             } else {
-                window.location.href = 'portal.html';
+                // Admin Redirection Fix
+                if (email === 'admin@nitikavya.com') {
+                    window.location.href = 'admin.html';
+                } else {
+                    window.location.href = 'portal.html';
+                }
             }
         }
     });

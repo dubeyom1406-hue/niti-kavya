@@ -128,6 +128,17 @@ function updateUserUI() {
     document.querySelector('.user-name').innerText = currentUser.name;
     document.querySelector('.user-role').innerText = currentUser.role;
     document.querySelector('.user-avatar img').src = currentUser.avatar;
+
+    // Show Admin Link in Sidebar if the user is admin
+    if (currentUser.email === 'admin@nitikavya.com') {
+        const nav = document.querySelector('.sidebar-nav ul');
+        if (!document.getElementById('admin-link-li')) {
+            const li = document.createElement('li');
+            li.id = 'admin-link-li';
+            li.innerHTML = `<a href="admin.html" style="color: var(--primary); font-weight: 900; background: rgba(255,107,0,0.1);"><span class="icon">⚙️</span> Admin Panel</a>`;
+            nav.appendChild(li);
+        }
+    }
 }
 
 function setupNavigation() {
